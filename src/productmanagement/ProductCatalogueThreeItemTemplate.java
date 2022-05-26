@@ -1,0 +1,359 @@
+package productmanagement;
+
+import java.awt.Image;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+
+public class ProductCatalogueThreeItemTemplate extends javax.swing.JPanel {
+    ArrayList<ProductItem> items = new ArrayList<>();
+
+    public ProductCatalogueThreeItemTemplate(String[] itemIds) {
+        initComponents();
+        
+        // Get first three Items
+        for (int i = 0; i < 3; i++) {
+            boolean found = false;
+            ArrayList<String> itemArray = ReadObject.readArray(ProductItem.FILE_NAME);
+            // Iterate through the Item array
+            for (String itemDetails : itemArray) {
+                // Split the line into details
+                String[] details = itemDetails.split(";");
+                // Check the details for a matching Id
+                if (details[0].equalsIgnoreCase(itemIds[i])) {
+                    // Create a Product Item object and add into array list
+                    items.add(new ProductItem(details));
+                    found = true;
+                    break;
+                }
+            }
+            // If item is not found, create an empty Product Item object and add it to the array list
+            if (!found) {
+                items.add(new ProductItem("", "", "", 0, "", "", "", "", ""));
+            }
+        }
+
+        resetItem(items.get(0), lblImageItem1, lblNameItem1, lblBrandItem1, lblPriceItem1, txaDescriptionItem1, 1);
+        resetItem(items.get(1), lblImageItem2, lblNameItem2, lblBrandItem2, lblPriceItem2, txaDescriptionItem2, 2);
+        resetItem(items.get(2), lblImageItem3, lblNameItem3, lblBrandItem3, lblPriceItem3, txaDescriptionItem3, 3);
+    }
+
+    private void resetItem(ProductItem item, JLabel lblImage, JLabel lblName, JLabel lblBrand, JLabel lblPrice, JTextArea txaDescription, int i) {
+        if (!item.getItemId().trim().equalsIgnoreCase("")) {
+            lblImage.setIcon(resizeImage(Paths.get("").toAbsolutePath().toString() + "/src" + item.getItemImagePath(), lblImage));
+            lblName.setText(item.getItemName());
+            lblBrand.setText(item.getItemBrand());
+            lblPrice.setText("RM " + String.valueOf(item.getItemPrice()));
+            txaDescription.setText(item.getItemDescription());
+        } else {
+            lblImage.setIcon(new ImageIcon());
+            lblName.setText("Title");
+            lblBrand.setText("Brand");
+            lblPrice.setText("Price");
+            txaDescription.setText("");
+        }
+        lblImage.setLocation(lblImage.getBounds().x, lblImage.getBounds().y);
+    }
+    
+    // Create a method to resize the image and label
+    private ImageIcon resizeImage(String imagePath, JLabel lblImage){
+        int x, y;
+        double width, height, ratio;
+        width = lblImage.getPreferredSize().getWidth();
+        height = lblImage.getPreferredSize().getHeight();
+
+        // Get the imageicon and get the width & height of the image
+        ImageIcon MyImage = new ImageIcon(imagePath);
+        x = MyImage.getIconWidth();
+        y = MyImage.getIconHeight();
+        ratio = (double) x / y;
+        
+        // To differentiate if the image is wider or higher than the label
+        if (ratio > (width / height)) {
+            if (ratio >= 1) {
+                lblImage.setBounds(lblImage.getBounds().x, lblImage.getBounds().y + (int) Math.round((height - (height / ratio)) / 2), (int) width, (int) Math.round(height / ratio));
+            } else {
+                lblImage.setBounds(lblImage.getBounds().x, lblImage.getBounds().y + (int) Math.round((height - (height * ratio)) / 2), (int) width, (int) Math.round(height * ratio));
+            }
+        } else if (ratio < (width / height)){
+            if (ratio >= 1) {
+                lblImage.setBounds(lblImage.getBounds().x + (int) Math.round((width - (height / ratio)) / 2), lblImage.getBounds().y, (int) Math.round(height / ratio), (int) height);
+            } else {
+                lblImage.setBounds(lblImage.getBounds().x + (int) Math.round((width - (height * ratio)) / 2), lblImage.getBounds().y, (int) Math.round(height * ratio), (int) height);
+            }
+        } else {
+            // The width is equal to the height, then only scale the image
+            lblImage.setBounds(lblImage.getBounds().x, lblImage.getBounds().y, (int) width, (int) height);
+        }
+        
+        // Resize the image to the size of the label
+        Image img = MyImage.getImage();
+        Image newImg = img.getScaledInstance((int) lblImage.getBounds().getWidth(),(int) lblImage.getBounds().getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImg);
+        return image;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        pnlItem1 = new javax.swing.JPanel();
+        lblImageItem1 = new javax.swing.JLabel();
+        pnlContentItem1 = new javax.swing.JPanel();
+        scrDescriptionItem1 = new javax.swing.JScrollPane();
+        txaDescriptionItem1 = new javax.swing.JTextArea();
+        lblBrandItem1 = new javax.swing.JLabel();
+        lblPriceItem1 = new javax.swing.JLabel();
+        lblNameItem1 = new javax.swing.JLabel();
+        pnlItem2 = new javax.swing.JPanel();
+        lblImageItem2 = new javax.swing.JLabel();
+        pnlContentItem2 = new javax.swing.JPanel();
+        scrDescriptionItem2 = new javax.swing.JScrollPane();
+        txaDescriptionItem2 = new javax.swing.JTextArea();
+        lblBrandItem2 = new javax.swing.JLabel();
+        lblPriceItem2 = new javax.swing.JLabel();
+        lblNameItem2 = new javax.swing.JLabel();
+        pnlItem3 = new javax.swing.JPanel();
+        lblImageItem3 = new javax.swing.JLabel();
+        pnlContentItem3 = new javax.swing.JPanel();
+        scrDescriptionItem3 = new javax.swing.JScrollPane();
+        txaDescriptionItem3 = new javax.swing.JTextArea();
+        lblBrandItem3 = new javax.swing.JLabel();
+        lblPriceItem3 = new javax.swing.JLabel();
+        lblNameItem3 = new javax.swing.JLabel();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(420, 420));
+        setMinimumSize(new java.awt.Dimension(420, 420));
+        setPreferredSize(new java.awt.Dimension(420, 420));
+        setLayout(null);
+
+        pnlItem1.setBackground(new java.awt.Color(255, 255, 255));
+        pnlItem1.setMaximumSize(new java.awt.Dimension(140, 420));
+        pnlItem1.setMinimumSize(new java.awt.Dimension(140, 420));
+        pnlItem1.setPreferredSize(new java.awt.Dimension(140, 420));
+        pnlItem1.setLayout(null);
+
+        lblImageItem1.setMaximumSize(new java.awt.Dimension(140, 180));
+        lblImageItem1.setMinimumSize(new java.awt.Dimension(140, 180));
+        lblImageItem1.setPreferredSize(new java.awt.Dimension(140, 180));
+        pnlItem1.add(lblImageItem1);
+        lblImageItem1.setBounds(0, 0, 140, 180);
+
+        pnlContentItem1.setMaximumSize(new java.awt.Dimension(140, 240));
+        pnlContentItem1.setMinimumSize(new java.awt.Dimension(140, 240));
+        pnlContentItem1.setPreferredSize(new java.awt.Dimension(140, 240));
+        pnlContentItem1.setLayout(null);
+
+        scrDescriptionItem1.setBorder(null);
+        scrDescriptionItem1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrDescriptionItem1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scrDescriptionItem1.setMaximumSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem1.setMinimumSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem1.setPreferredSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem1.setLayout(null);
+
+        txaDescriptionItem1.setEditable(false);
+        txaDescriptionItem1.setBackground(new java.awt.Color(240, 240, 240));
+        txaDescriptionItem1.setColumns(20);
+        txaDescriptionItem1.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        txaDescriptionItem1.setLineWrap(true);
+        txaDescriptionItem1.setRows(5);
+        txaDescriptionItem1.setText("Lorem Ipsum is simply dummy text of the printing and typesetting industry\n. Lorem Ipsum has been the industry's standard dummy text ever since t\nhe 1500s, when an unknown printer took a galley of type and scrambled it to m\nake a type specimen book. It has survived not only five centuries, but also the\n leap into electronic typesetting, remaining essentially unchanged. It was popula\nrised in the 1960s w");
+        txaDescriptionItem1.setBorder(null);
+        txaDescriptionItem1.setMaximumSize(new java.awt.Dimension(120, 140));
+        txaDescriptionItem1.setMinimumSize(new java.awt.Dimension(120, 140));
+        txaDescriptionItem1.setPreferredSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem1.setViewportView(txaDescriptionItem1);
+        scrDescriptionItem1.add(txaDescriptionItem1);
+        txaDescriptionItem1.setBounds(0, 0, 120, 140);
+
+        pnlContentItem1.add(scrDescriptionItem1);
+        scrDescriptionItem1.setBounds(6, 87, 120, 140);
+
+        lblBrandItem1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        lblBrandItem1.setText("BRAND");
+        pnlContentItem1.add(lblBrandItem1);
+        lblBrandItem1.setBounds(6, 37, 116, 13);
+
+        lblPriceItem1.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        lblPriceItem1.setText("RM 100");
+        pnlContentItem1.add(lblPriceItem1);
+        lblPriceItem1.setBounds(6, 56, 78, 13);
+
+        lblNameItem1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 16)); // NOI18N
+        lblNameItem1.setText("MR CHAIR");
+        pnlContentItem1.add(lblNameItem1);
+        lblNameItem1.setBounds(6, 11, 120, 20);
+
+        pnlItem1.add(pnlContentItem1);
+        pnlContentItem1.setBounds(0, 180, 140, 240);
+
+        add(pnlItem1);
+        pnlItem1.setBounds(0, 0, 140, 420);
+
+        pnlItem2.setBackground(new java.awt.Color(255, 255, 255));
+        pnlItem2.setMaximumSize(new java.awt.Dimension(140, 420));
+        pnlItem2.setMinimumSize(new java.awt.Dimension(140, 420));
+        pnlItem2.setPreferredSize(new java.awt.Dimension(140, 420));
+        pnlItem2.setLayout(null);
+
+        lblImageItem2.setMaximumSize(new java.awt.Dimension(140, 180));
+        lblImageItem2.setMinimumSize(new java.awt.Dimension(140, 180));
+        lblImageItem2.setPreferredSize(new java.awt.Dimension(140, 180));
+        pnlItem2.add(lblImageItem2);
+        lblImageItem2.setBounds(0, 0, 140, 180);
+
+        pnlContentItem2.setMaximumSize(new java.awt.Dimension(140, 240));
+        pnlContentItem2.setMinimumSize(new java.awt.Dimension(140, 240));
+        pnlContentItem2.setPreferredSize(new java.awt.Dimension(140, 240));
+        pnlContentItem2.setLayout(null);
+
+        scrDescriptionItem2.setBorder(null);
+        scrDescriptionItem2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrDescriptionItem2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scrDescriptionItem2.setMaximumSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem2.setMinimumSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem2.setPreferredSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem2.setLayout(null);
+
+        txaDescriptionItem2.setEditable(false);
+        txaDescriptionItem2.setBackground(new java.awt.Color(240, 240, 240));
+        txaDescriptionItem2.setColumns(20);
+        txaDescriptionItem2.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        txaDescriptionItem2.setLineWrap(true);
+        txaDescriptionItem2.setRows(5);
+        txaDescriptionItem2.setText("Lorem Ipsum is simply dummy text of the printing and typesetting industry\n. Lorem Ipsum has been the industry's standard dummy text ever since t\nhe 1500s, when an unknown printer took a galley of type and scrambled it to m\nake a type specimen book. It has survived not only five centuries, but also the\n leap into electronic typesetting, remaining essentially unchanged. It was popula\nrised in the 1960s w");
+        txaDescriptionItem2.setBorder(null);
+        txaDescriptionItem2.setMaximumSize(new java.awt.Dimension(120, 140));
+        txaDescriptionItem2.setMinimumSize(new java.awt.Dimension(120, 140));
+        txaDescriptionItem2.setPreferredSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem2.setViewportView(txaDescriptionItem2);
+        scrDescriptionItem2.add(txaDescriptionItem2);
+        txaDescriptionItem2.setBounds(0, 0, 120, 140);
+
+        pnlContentItem2.add(scrDescriptionItem2);
+        scrDescriptionItem2.setBounds(6, 87, 120, 140);
+
+        lblBrandItem2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        lblBrandItem2.setText("BRAND");
+        pnlContentItem2.add(lblBrandItem2);
+        lblBrandItem2.setBounds(6, 37, 116, 13);
+
+        lblPriceItem2.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        lblPriceItem2.setText("RM 100");
+        pnlContentItem2.add(lblPriceItem2);
+        lblPriceItem2.setBounds(6, 56, 78, 13);
+
+        lblNameItem2.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 16)); // NOI18N
+        lblNameItem2.setText("MR CHAIR");
+        pnlContentItem2.add(lblNameItem2);
+        lblNameItem2.setBounds(6, 11, 120, 20);
+
+        pnlItem2.add(pnlContentItem2);
+        pnlContentItem2.setBounds(0, 180, 140, 240);
+
+        add(pnlItem2);
+        pnlItem2.setBounds(140, 0, 140, 420);
+
+        pnlItem3.setBackground(new java.awt.Color(255, 255, 255));
+        pnlItem3.setMaximumSize(new java.awt.Dimension(140, 420));
+        pnlItem3.setMinimumSize(new java.awt.Dimension(140, 420));
+        pnlItem3.setPreferredSize(new java.awt.Dimension(140, 420));
+        pnlItem3.setLayout(null);
+
+        lblImageItem3.setMaximumSize(new java.awt.Dimension(140, 180));
+        lblImageItem3.setMinimumSize(new java.awt.Dimension(140, 180));
+        lblImageItem3.setPreferredSize(new java.awt.Dimension(140, 180));
+        pnlItem3.add(lblImageItem3);
+        lblImageItem3.setBounds(0, 0, 140, 180);
+
+        pnlContentItem3.setMaximumSize(new java.awt.Dimension(140, 240));
+        pnlContentItem3.setMinimumSize(new java.awt.Dimension(140, 240));
+        pnlContentItem3.setPreferredSize(new java.awt.Dimension(140, 240));
+        pnlContentItem3.setLayout(null);
+
+        scrDescriptionItem3.setBorder(null);
+        scrDescriptionItem3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrDescriptionItem3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scrDescriptionItem3.setMaximumSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem3.setMinimumSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem3.setPreferredSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem3.setLayout(null);
+
+        txaDescriptionItem3.setEditable(false);
+        txaDescriptionItem3.setBackground(new java.awt.Color(240, 240, 240));
+        txaDescriptionItem3.setColumns(20);
+        txaDescriptionItem3.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        txaDescriptionItem3.setLineWrap(true);
+        txaDescriptionItem3.setRows(5);
+        txaDescriptionItem3.setText("Lorem Ipsum is simply dummy text of the printing and typesetting industry\n. Lorem Ipsum has been the industry's standard dummy text ever since t\nhe 1500s, when an unknown printer took a galley of type and scrambled it to m\nake a type specimen book. It has survived not only five centuries, but also the\n leap into electronic typesetting, remaining essentially unchanged. It was popula\nrised in the 1960s w");
+        txaDescriptionItem3.setBorder(null);
+        txaDescriptionItem3.setMaximumSize(new java.awt.Dimension(120, 140));
+        txaDescriptionItem3.setMinimumSize(new java.awt.Dimension(120, 140));
+        txaDescriptionItem3.setPreferredSize(new java.awt.Dimension(120, 140));
+        scrDescriptionItem3.setViewportView(txaDescriptionItem3);
+        scrDescriptionItem3.add(txaDescriptionItem3);
+        txaDescriptionItem3.setBounds(0, 0, 120, 140);
+
+        pnlContentItem3.add(scrDescriptionItem3);
+        scrDescriptionItem3.setBounds(6, 87, 120, 140);
+
+        lblBrandItem3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        lblBrandItem3.setText("BRAND");
+        pnlContentItem3.add(lblBrandItem3);
+        lblBrandItem3.setBounds(6, 37, 116, 13);
+
+        lblPriceItem3.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        lblPriceItem3.setText("RM 100");
+        pnlContentItem3.add(lblPriceItem3);
+        lblPriceItem3.setBounds(6, 56, 78, 13);
+
+        lblNameItem3.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 16)); // NOI18N
+        lblNameItem3.setText("MR CHAIR");
+        pnlContentItem3.add(lblNameItem3);
+        lblNameItem3.setBounds(6, 11, 120, 20);
+
+        pnlItem3.add(pnlContentItem3);
+        pnlContentItem3.setBounds(0, 180, 140, 240);
+
+        add(pnlItem3);
+        pnlItem3.setBounds(280, 0, 140, 420);
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel lblBrandItem1;
+    private javax.swing.JLabel lblBrandItem2;
+    private javax.swing.JLabel lblBrandItem3;
+    private javax.swing.JLabel lblImageItem1;
+    private javax.swing.JLabel lblImageItem2;
+    private javax.swing.JLabel lblImageItem3;
+    private javax.swing.JLabel lblNameItem1;
+    private javax.swing.JLabel lblNameItem2;
+    private javax.swing.JLabel lblNameItem3;
+    private javax.swing.JLabel lblPriceItem1;
+    private javax.swing.JLabel lblPriceItem2;
+    private javax.swing.JLabel lblPriceItem3;
+    private javax.swing.JPanel pnlContentItem1;
+    private javax.swing.JPanel pnlContentItem2;
+    private javax.swing.JPanel pnlContentItem3;
+    private javax.swing.JPanel pnlItem1;
+    private javax.swing.JPanel pnlItem2;
+    private javax.swing.JPanel pnlItem3;
+    private javax.swing.JScrollPane scrDescriptionItem1;
+    private javax.swing.JScrollPane scrDescriptionItem2;
+    private javax.swing.JScrollPane scrDescriptionItem3;
+    private javax.swing.JTextArea txaDescriptionItem1;
+    private javax.swing.JTextArea txaDescriptionItem2;
+    private javax.swing.JTextArea txaDescriptionItem3;
+    // End of variables declaration//GEN-END:variables
+}
